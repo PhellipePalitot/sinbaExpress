@@ -13,6 +13,10 @@ body {
   background: rgba(255, 255, 255, 0.2);
   margin: 16px 24px 16px 0;
   float: left;
+  background-repeat: 'no-repeat';
+  background-position: 'center';
+
+  background-image: url('../../assets/logo.png');
 }
 
 /* Estilos do conteúdo */
