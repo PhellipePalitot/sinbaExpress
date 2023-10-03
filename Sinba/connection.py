@@ -78,17 +78,32 @@ class Connection():
             print("Error updating {table}", error)
 
     # DELETE
-    def delete(self, id_cliente = 0):
+    # def delete(self, id_cliente: int = 0):
+    #     try:
+    #         sql_search = f"SELECT * FROM cliente WHERE id_cliente = {id_cliente}"
+    #
+    #         if not self.query(sql_search):
+    #             return False
+    #
+    #         sql_delete = f"DELETE FROM cliente WHERE id_cliente = {id_cliente}"
+    #
+    #         self.execute(sql_delete)
+    #         self.commit()
+    #         return False
+    #     except Exception as error:
+    #         print("Error deleting record", error)
+
+    def delete(self, table: str, filter_column: str, filter_value):
         try:
-            sql_search = f"SELECT * FROM cliente WHERE id_cliente = {id_cliente}"
+            # Construct the SQL query to delete records based on the provided filter
+            sql = f"DELETE FROM {table} WHERE {filter_column} = {filter_value}"
 
-            if not self.query(sql_search):
-                return False
-            
-            sql_delete = f"DELETE FROM cliente WHERE id_cliente = {id_cliente}"
+            # Execute the SQL query
+            self.execute(sql)
 
-            self.execute(sql_delete)
+            # Commit the transaction
             self.commit()
-            return False
+
+            print(f"Successfully deleted record(s) from {table} where {filter_column} = {filter_value}")
         except Exception as error:
-            print("Error deleting record", error)
+            print(f"Error deleting record(s) from {table}: {error}")
