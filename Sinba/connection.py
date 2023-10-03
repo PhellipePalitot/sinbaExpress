@@ -1,7 +1,8 @@
 import psycopg2 as db
 from typing import Tuple
 
-class Connection():
+
+class Connection:
     def __init__(self, db_password):
         self.postgres = {
             "host": "localhost",
@@ -51,7 +52,7 @@ class Connection():
             print("Error inserting record in {table}", error)
 
     # READ
-    def read(self, table: str, filter_column: str, filter_value, columns_to_search: str='*'):
+    def read(self, table: str, filter_column: str, filter_value, columns_to_search: str = '*'):
         try:
             sql = f"SELECT {columns_to_search} FROM {table} WHERE {filter_column} = {filter_value}"
             return self.query(sql)
