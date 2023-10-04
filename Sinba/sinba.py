@@ -68,8 +68,8 @@ def display_menu(connect: Connection):
             connect.read_all(table=table_name)
 
         elif choice == '4':
-            print("4. Update")
             sys_clear()
+            print("4. Update")
             # Get table name from the user
             table_name = input("Enter the table name: ")
             # Get column from the user
