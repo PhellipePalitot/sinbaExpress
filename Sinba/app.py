@@ -9,7 +9,7 @@ app = FastAPI()
 class Connection:
     def __init__(self, db_password):
         self.postgres = {
-            "host": "172.17.0.3",
+            "host": "172.17.0.2",
             "port": "5432",
             "user": "postgres",
             "password": db_password,
@@ -142,3 +142,70 @@ def read_all_clientes(db: Connection = Depends(get_db)):
         return clientes
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erro ao ler todos os clientes: {str(e)}")
+
+# Modelo para representar um produto
+class ProdutoModel(BaseModel):
+    nome_produto: str
+    descricao: str
+    preco: float
+    estoque_disponivel: int
+
+# Operação READ (Ler as informações de um produto)
+@app.get("/produtos/{produto_id}/", response_model=ProdutoModel)
+def read_produto(produto_id: int, db: Connection = Depends(get_db)):
+    try:
+        sql = "SELECT * FROM Produtos WHERE IDProduto = %s"
+        db.execute(sql, (produto_id,))
+        result = db.fetchall()
+        if not result:
+            raise HTTPException(status_code=404, detail="Produto não encontrado")
+        
+        # Transforma o resultado em uma instância de ProdutoModel
+        produto = ProdutoModel(
+            nome_produto=result[0][1],
+            descricao=result[0][2],
+            preco=float(result[0][3]),
+            estoque_disponivel=result[0][4]
+        )
+
+        return produto
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erro ao ler produto: {str(e)}")
+    
+# Operação UPDATE (Atualizar as informações de um produto)
+@app.put("/produtos/{produto_id}/", response_model=ProdutoModel)
+def update_produto(produto_id: int, produto: ProdutoModel, db: Connection = Depends(get_db)):
+    try:
+        sql = "UPDATE Produtos SET NomeProduto=%s, Descricao=%s, Preco=%s, EstoqueDisponivel=%s WHERE IDProduto=%s"
+        db.execute(sql, (produto.nome_produto, produto.descricao, produto.preco, produto.estoque_disponivel, produto_id))
+        db.commit()
+        return {"message": "Produto atualizado com sucesso"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erro ao atualizar produto: {str(e)}")
+
+# Operação DELETE (Excluir um produto)
+@app.delete("/produtos/{produto_id}/", response_model=dict)
+def delete_produto(produto_id: int, db: Connection = Depends(get_db)):
+    try:
+        sql = "DELETE FROM Produtos WHERE IDProduto = %s RETURNING IDProduto"
+        db.execute(sql, (produto_id,))
+        produto_id = db.cur.fetchone()[0]
+        db.commit()
+        return {"message": "Produto excluído com sucesso"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erro ao excluir produto: {str(e)}")
+
+# Operação READ ALL (Ler todas as informações dos produtos)
+@app.get("/produtos/", response_model=List[ProdutoModel])
+def read_all_produtos(db: Connection = Depends(get_db)):
+    try:
+        sql = "SELECT * FROM Produtos"
+        db.execute(sql)
+        results = db.fetchall()
+
+        # Transforma os resultados em uma lista de instâncias de ProdutoModel
+        produtos = [{"IDProduto": row[0], "nome_produto": row[1], "descricao": row[2], "preco": float(row[3]), "estoque_disponivel": row[4]} for row in results]
+
+        return produtos
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erro ao ler todos os produtos: {str(e)}")

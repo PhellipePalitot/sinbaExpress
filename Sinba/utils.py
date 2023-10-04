@@ -30,11 +30,11 @@ def display_header(header: str):
 def display_menu():
     sys_clear()
     print("----- SinbaExpress (ADMIN) -----")
-    print("C - Inserir")
-    print("R - Ler")
-    print("U - Atualizar")
-    print("D - Apagar")
-    print("S - Sair")
+    print("C   - Inserir")
+    print("R   - Ler")
+    print("U   - Atualizar")
+    print("D   - Apagar")
+    print("S   - Sair")
     print("RLP - Relatório de Produtos")
     print("--------------------------------")
 
