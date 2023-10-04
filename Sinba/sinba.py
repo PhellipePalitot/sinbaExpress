@@ -21,11 +21,11 @@ class SinbaExpress():
                 # Get column name from the user
                 table_cols = get_table_columns(table_name)
                 print(f"Colunas: {table_cols}\n")
-                # Get values from the user as a comma-separated tuple
-                values = tuple(input("Digite os valores das colunas no formato acima (value1, value2):\n").split(','))
+                # Get values from the user as a comma-separated
+                values = tuple(v.strip() for v in input("Digite os valores das colunas no formato acima (value1, value2):\n").split(','))
                 self.connect.create(
                     table_name,
-                    columns,
+                    table_cols,
                     values
                 )
 
