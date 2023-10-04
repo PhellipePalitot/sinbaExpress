@@ -1,5 +1,5 @@
 import psycopg2 as db
-from typing import Tuple
+from typing import Tuple, Any
 
 
 class Connection:
@@ -52,7 +52,7 @@ class Connection:
             print("Error inserting record in {table}", error)
 
     # READ
-    def read(self, table: str, filter_column: str, filter_value: str, columns_to_search: str = '*'):
+    def read(self, table: str, filter_column: str, filter_value: Any, columns_to_search: str = '*'):
         try:
             sql = f"SELECT {columns_to_search} FROM {table} WHERE {filter_column} = {filter_value}"
             return self.query(sql)
@@ -69,7 +69,7 @@ class Connection:
             print(f"Record not found in {table}", error)
 
     # UPDATE
-    def update(self, table: str, filter_column: str, filter_value: str, column_to_set: str, value_to_set: tuple):
+    def update(self, table: str, filter_column: str, filter_value: Any, column_to_set: str, value_to_set: tuple):
         try:
             sql = f"UPDATE {table} SET {column_to_set} = {value_to_set} WHERE {filter_column} = {filter_value}"
             self.execute(sql)
@@ -94,7 +94,7 @@ class Connection:
     #     except Exception as error:
     #         print("Error deleting record", error)
 
-    def delete(self, table: str, filter_column: str, filter_value: str):
+    def delete(self, table: str, filter_column: str, filter_value: Any):
         try:
             # Construct the SQL query to delete records based on the provided filter
             sql = f"DELETE FROM {table} WHERE {filter_column} = {filter_value}"
