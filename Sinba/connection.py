@@ -43,9 +43,9 @@ class Connection:
         return self.fetchall()
 
     # CREATE
-    def create(self, table, columns: Tuple, values: Tuple):
+    def create(self, table: str, columns: str, values: Tuple):
         try:
-            sql = f"INSERT INTO {table} {columns} VALUES {values}"
+            sql = f"INSERT INTO {table} ({columns}) VALUES {values}"
             self.execute(sql)
             self.commit()
         except Exception as error:
@@ -69,7 +69,7 @@ class Connection:
             print(f"Record not found in {table}", error)
 
     # UPDATE
-    def update(self, table: str, filter_column: str, filter_value: Any, column_to_set: str, value_to_set: tuple):
+    def update(self, table: str, filter_column: str, filter_value: Any, column_to_set: str, value_to_set: Tuple):
         try:
             sql = f"UPDATE {table} SET {column_to_set} = {value_to_set} WHERE {filter_column} = {filter_value}"
             self.execute(sql)

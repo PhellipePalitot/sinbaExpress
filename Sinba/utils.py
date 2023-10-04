@@ -1,84 +1,39 @@
 import os
+import getpass
 
-# Limpa o terminal
-def clear_terminal():
-    os.system('cls' if os.name == 'nt' else 'clear')
+table_columns = {
+    "CLIENTES": "Nome, CPF, Endereco, Email, Telefone, Usuario",
+    "PRODUTOS": "NomeProduto, Descricao, Preco, EstoqueDisponivel",
+    "CATEGORIAS": "NomeCategoria, Descricao",
+    "PRODUTO_CATEGORIA": "IDCategoria, IDProduto",
+    "PEDIDOS": "IDCliente, StatusPedido, ValorTotal",
+    "ITEM_CATEGORIA": "IDPedido, IDProduto, Quantidade, PrecoUnitario, TotalItem"
+}
 
-# Fecha o sistema
-def quitLibrary():
-    print("\n\tFechando o sistema...")
-    print("\n\tObrigado por visitar a livraria Tuko!\n")
-    quit()
+def get_db_password():
+    db_password = getpass.getpass("Insira a senha para acessar o BD: ")
+    return db_password
 
-# Usuario escolhe sim ou não
-def SimNao():
-    while True:
-        escolha = input(  
-                "* (S) Sim \n"
-                "* (N) Não \n"
-                "-> "
-                ).upper()
+def sys_clear():
+    # Detect the operating system
+    if os.name == 'posix':  # Linux, macOS, and other POSIX systems
+        os.system('clear')
+    elif os.name == 'nt':  # Windows
+        os.system('cls')
 
-        if escolha not in ["N", "S", "SIM", "NAO", "NÃO"]:
-            print("\nResposta inválida, tente novamente...")
-            continue
-        else:
-            return escolha
+def display_menu():
+    sys_clear()
+    print("----- SinbaExpress (ADMIN) -----")
+    print("C - Inserir")
+    print("R - Ler")
+    print("U - Atualizar")
+    print("D - Apagar")
+    print("S - Sair")
+    print("--------------------------------")
 
-# Usuario escolhe voltar
-def Voltar():
-    opcoes = ["V", "VOLTAR"]
+def display_c_header():
+    sys_clear()
+    print("------- SinbaExpress (C) -------")
 
-    while True:
-        voltar = input(
-                "\n* (V) Voltar\n"
-                "-> "
-                )
-
-        voltar = voltar.upper()
-
-        if voltar not in opcoes:
-            print("\nDesculpe, tente novamente...\n")
-            continue
-        else:
-            clear_terminal()
-            break
-
-# checa se o email existe na tabela "cliente", se existe fala "O email inserido já possui cadastro na livraria"
-def checkEmail(Email):
-    cliente_cadastrado = tables['cliente'].read('email', email = Email, search_type = "email")
-    funcionario_cadastrado = tables['vendedor'].read('email', email = Email, search_type = "email")
-
-    if cliente_cadastrado or funcionario_cadastrado:
-        return False
-    # se não, ele vai pra próxima etapa de registro
-    return True
-
-# checa se o nome do usuário existe na tabela "cliente", se não, para e fala: "Usuário não encontrado no registro"
-def checkUsername(Usuario):
-    cliente_cadastrado = tables['cliente'].read('usuario', usuario = Usuario, search_type = "usuario")
-    funcionario_cadastrado = tables['vendedor'].read('usuario', usuario = Usuario, search_type = "usuario")
-    
-    if cliente_cadastrado or funcionario_cadastrado:
-        return False
-    # se não, ele vai pra próxima etapa de registro
-    return True
-
-# checa se a senha do usuário coincide com a senha registrada desse usuaŕio na tabela "cliente"
-def checkPassword(Usuario, senha):
-    cliente = tables['cliente'].read('*', usuario = Usuario, search_type = "usuario")
-    funcionario = tables['vendedor'].read('*', usuario = Usuario, search_type = "usuario")
-
-    if funcionario:
-        senha_funcionario = tables['vendedor'].read('senha', usuario = Usuario, search_type = "usuario")[0][0]
-        if senha_funcionario == senha:
-            return True
-        else:
-            return False
-            
-    elif cliente:
-        senha_cliente = tables['cliente'].read('senha', usuario = Usuario, search_type = "usuario")[0][0]
-        if senha_cliente == senha:
-            return True
-        else:
-            return False
+def get_table_columns(table: str):
+    return table_columns[table]
