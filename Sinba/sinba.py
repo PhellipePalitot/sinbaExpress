@@ -26,6 +26,7 @@ def display_menu(connect: Connection):
 
         if choice == '1':
             sys_clear()
+            print("1. Create")
             # Get table name from the user
             table_name = input("Enter the table name: ")
             # Get columns from the user as a comma-separated tuple
@@ -43,45 +44,67 @@ def display_menu(connect: Connection):
 
         elif choice == '2':
             sys_clear()
+            print("2. Read")
             # Get table name from the user
             table_name = input("Enter the table name: ")
             # Get column from the user
             column = input("Enter the column name: ")
-            # Get values from the user as a comma-separated tuple
-            values_input = input("Enter the values as a comma-separated tuple (e.g.,'value1,value2'): ")
+            # Parse the inputs into tuples
+            value = input("Enter the value to search: ")
             # Enter the column to search
             column_to_search = input("Enter the column to search name: ")
-            # Parse the inputs into tuples
-            values = tuple(values_input.split(','))
             connect.read(
                 table=table_name,
                 filter_column=column,
-                filter_value=values,
+                filter_value=value,
                 columns_to_search=column_to_search
             )
 
         elif choice == '3':
             sys_clear()
+            print("3. Read all")
             # Get table name from the user
             table_name = input("Enter the table name: ")
             connect.read_all(table=table_name)
 
         elif choice == '4':
+            print("4. Update")
             sys_clear()
             # Get table name from the user
             table_name = input("Enter the table name: ")
-            connect.update(table=table_name, filter_column=, filter_value=,column_to_set=, value_to_set=)
+            # Get column from the user
+            column = input("Enter the column name: ")
+            # Parse the inputs into tuples
+            value = input("Enter the value to search: ")
+            # Get column from the user
+            new_column = input("Enter the new column name: ")
+            # Get values from the user as a comma-separated tuple
+            values_input = input("Enter the values to set as a comma-separated tuple (e.g.,'value1,value2'): ")
+            # Parse the inputs into tuples
+            values = tuple(values_input.split(','))
+            connect.update(
+                table=table_name,
+                filter_column=column,
+                filter_value=value,
+                column_to_set=new_column,
+                value_to_set=values
+            )
 
         elif choice == '5':
             sys_clear()
+            print("5. Delete")
             # Get table name from the user
             table_name = input("Enter the table name: ")
-            connect.delete(table=table_name, filter_column=, filter_value=)
+            # Get column from the user
+            column = input("Enter the column name: ")
+            # Parse the inputs into tuples
+            value = input("Enter the value to delete: ")
+            connect.delete(table=table_name, filter_column=column, filter_value=value)
 
         elif choice == '6':
             sys_clear()
+            print("6. Exit")
             # Get table name from the user
-            table_name = input("Enter the table name: ")
             print("Exiting the CRUD menu. Goodbye!")
             break
 
