@@ -122,5 +122,4 @@ class SinbaExpress():
         db_password = getpass.getpass("Enter the password to access the DB: ")
         connection = Connection(db_password)
         display_menu(connect=connection)
-        print(connection.read_all("Clientes"))
         return
