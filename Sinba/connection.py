@@ -1,6 +1,5 @@
 import psycopg2 as db
-from typing import Tuple, Any
-
+from typing import Tuple
 
 class Connection:
     def __init__(self, db_password):
@@ -46,65 +45,50 @@ class Connection:
     def create(self, table: str, columns: str, values: Tuple):
         try:
             sql = f"INSERT INTO {table} ({columns}) VALUES {values}"
+            input(sql)
             self.execute(sql)
             self.commit()
+
         except Exception as error:
-            print("Error inserting record in {table}", error)
+            input("Error inserting record in {table}", error)
 
     # READ
-    def read(self, table: str, filter_column: str, filter_value: Any, columns_to_search: str = '*'):
+    def read(self, table: str, filter: str, columns_to_search: str = '*'):
         try:
-            sql = f"SELECT {columns_to_search} FROM {table} WHERE {filter_column} = {filter_value}"
+            sql = f"SELECT {columns_to_search} FROM {table} WHERE {filter}"
+            input(sql)
             return self.query(sql)
 
         except Exception as error:
-            print(f"Record not found in {table}", error)
+            input(f"Record not found in {table}", error)
 
     def read_all(self, table: str, columns: str = '*'):
         try:
             sql = f"SELECT {columns} FROM {table}"
+            input(sql)
             return self.query(sql)
 
         except Exception as error:
-            print(f"Record not found in {table}", error)
+            input(f"Record not found in {table}", error)
 
     # UPDATE
-    def update(self, table: str, filter_column: str, filter_value: Any, column_to_set: str, value_to_set: Tuple):
+    def update(self, table: str, filter: str, column_to_set: str, value_to_set: str):
         try:
-            sql = f"UPDATE {table} SET {column_to_set} = {value_to_set} WHERE {filter_column} = {filter_value}"
+            sql = f"UPDATE {table} SET {column_to_set} = {value_to_set} WHERE {filter}"
+            input(sql)
             self.execute(sql)
             self.commit()
 
         except Exception as error:
-            print("Error updating {table}", error)
+            input("Error updating {table}", error)
 
     # DELETE
-    # def delete(self, id_cliente: int = 0):
-    #     try:
-    #         sql_search = f"SELECT * FROM cliente WHERE id_cliente = {id_cliente}"
-    #
-    #         if not self.query(sql_search):
-    #             return False
-    #
-    #         sql_delete = f"DELETE FROM cliente WHERE id_cliente = {id_cliente}"
-    #
-    #         self.execute(sql_delete)
-    #         self.commit()
-    #         return False
-    #     except Exception as error:
-    #         print("Error deleting record", error)
-
-    def delete(self, table: str, filter_column: str, filter_value: Any):
+    def delete(self, table: str, filter: str):
         try:
-            # Construct the SQL query to delete records based on the provided filter
-            sql = f"DELETE FROM {table} WHERE {filter_column} = {filter_value}"
-
-            # Execute the SQL query
+            sql = f"DELETE FROM {table} WHERE {filter}"
+            input(sql)
             self.execute(sql)
-
-            # Commit the transaction
             self.commit()
 
-            print(f"Successfully deleted record(s) from {table} where {filter_column} = {filter_value}")
         except Exception as error:
-            print(f"Error deleting record(s) from {table}: {error}")
+            input(f"Error deleting record(s) from {table}: {error}")
