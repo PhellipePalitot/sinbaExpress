@@ -35,6 +35,7 @@ def display_menu():
     print("U - Atualizar")
     print("D - Apagar")
     print("S - Sair")
+    print("RLP - Relatório de Produtos")
     print("--------------------------------")
 
 def display_read_options():

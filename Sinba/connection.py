@@ -4,7 +4,7 @@ from typing import Tuple
 class Connection:
     def __init__(self, db_password):
         self.postgres = {
-            "host": "localhost",
+            "host": "172.17.0.2",
             "port": "5432",
             "user": "postgres",
             "password": db_password,
@@ -92,3 +92,30 @@ class Connection:
 
         except Exception as error:
             input(f"\n{error}")
+
+
+    def obter_relatorio_produtos(self):
+        try:
+            # Crie um cursor para executar as consultas
+
+            # Consulta para obter o relatório de produtos
+            consulta = """
+                SELECT NomeProduto, Descricao, Preco, EstoqueDisponivel, Preco * EstoqueDisponivel AS ValorTotalEstoque
+                FROM public.Produtos;
+            """
+            self.execute(consulta)
+
+            # Recupere os resultados da consulta
+            relatorio = self.fetchall()
+
+            # Exiba o relatório
+            for produto in relatorio:
+                print("Nome do Produto:", produto[0])
+                print("Descrição:", produto[1])
+                print("Preço:", produto[2])
+                print("Estoque Disponível:", produto[3])
+                print("Valor Total do Estoque:", produto[4])
+                print("-" * 30)
+
+        except Exception as e:
+            print("Erro ao executar a consulta:", e)
