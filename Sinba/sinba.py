@@ -44,10 +44,11 @@ class SinbaExpress():
                         print(f"Colunas: {table_cols}\n")
                         columns_to_search = input("Digite os nomes das colunas que deseja exibir: ")
                         data = self.connect.read_all(table_name, columns_to_search)
-                        print(f"\n{table_cols}\n")
-                        for row in data:
-                            print(row)
-                        input()
+                        if data is not None:
+                            print(f"\n{table_cols}\n")
+                            for row in data:
+                                print(row)
+                            input()
 
                     elif choice == '2':
                         sys_clear()
@@ -63,10 +64,11 @@ class SinbaExpress():
                             filter,
                             columns_to_search
                         )
-                        print(f"\n{table_cols}\n")
-                        for row in data:
-                            print(row)
-                        input()
+                        if data is not None:
+                            print(f"\n{table_cols}\n")
+                            for row in data:
+                                print(row)
+                            input()
 
                     elif choice == 'S':
                         break
@@ -104,46 +106,5 @@ class SinbaExpress():
                 )
 
             elif choice == 'S':
-                input("Saindo da área restrita...")
-                break
-
-    def read_options(self):
-        while True:
-            display_read_options()
-            choice = input("Digite sua escolha: ")
-
-            if choice == '1':
-                sys_clear()
-                display_header('R-A')
-                # Get table name from the user
-                table_name = input("Digite o nome da tabela: ").upper()
-                table_cols = get_table_columns(table_name)
-                print(f"Colunas: {table_cols}\n")
-                columns_to_search = input("Digite os nomes das colunas que deseja exibir: ")
-                data = self.connect.read_all(table_name, columns_to_search)
-                print(f"\n{table_cols}\n")
-                for row in data:
-                    print(row)
-                input()
-
-            elif choice == '2':
-                sys_clear()
-                display_header('R-F')
-                # Get table name from the user
-                table_name = input("Digite o nome da tabela: ").upper()
-                table_cols = get_table_columns(table_name)
-                print(f"Colunas: {table_cols}\n")
-                columns_to_search = input("Digite os nomes das colunas que deseja exibir: ")
-                filter = input("Digite o argumento de filtragem (Coluna :op Valor): ")
-                data = self.connect.read(
-                    table_name,
-                    filter,
-                    columns_to_search
-                )
-                print(f"\n{table_cols}\n")
-                for row in data:
-                    print(row)
-                input()
-
-            elif choice == 'S':
+                input("\nSaindo da área restrita...")
                 break

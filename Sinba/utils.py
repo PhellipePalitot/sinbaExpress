@@ -13,14 +13,15 @@ table_columns = {
 def get_table_columns(table: str):
     return table_columns[table]
 
-def get_db_password():
-    return getpass.getpass("Insira a senha para acessar o BD: ")
-
 def sys_clear():
     if os.name == 'posix':  # Linux, macOS, and other POSIX systems
         os.system('clear')
     elif os.name == 'nt':  # Windows
         os.system('cls')
+
+def get_db_password():
+    sys_clear()
+    return getpass.getpass("Insira a senha para acessar o BD: ")
 
 def display_header(header: str):
     sys_clear()

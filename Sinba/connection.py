@@ -45,50 +45,50 @@ class Connection:
     def create(self, table: str, columns: str, values: Tuple):
         try:
             sql = f"INSERT INTO {table} ({columns}) VALUES {values}"
-            input(sql)
+            input(f"\n{sql}")
             self.execute(sql)
             self.commit()
 
         except Exception as error:
-            input("Error inserting record in {table}", error)
+            input(f"\n{error}")
 
     # READ
     def read(self, table: str, filter: str, columns_to_search: str = '*'):
         try:
             sql = f"SELECT {columns_to_search} FROM {table} WHERE {filter}"
-            input(sql)
+            input(f"\n{sql}")
             return self.query(sql)
 
         except Exception as error:
-            input(f"Record not found in {table}", error)
+            input(f"\n{error}")
 
     def read_all(self, table: str, columns: str = '*'):
         try:
             sql = f"SELECT {columns} FROM {table}"
-            input(sql)
+            input(f"\n{sql}")
             return self.query(sql)
 
         except Exception as error:
-            input(f"Record not found in {table}", error)
+            input(f"\n{error}")
 
     # UPDATE
     def update(self, table: str, filter: str, column_to_set: str, value_to_set: str):
         try:
             sql = f"UPDATE {table} SET {column_to_set} = {value_to_set} WHERE {filter}"
-            input(sql)
+            input(f"\n{sql}")
             self.execute(sql)
             self.commit()
 
         except Exception as error:
-            input("Error updating {table}", error)
+            input(f"\n{error}")
 
     # DELETE
     def delete(self, table: str, filter: str):
         try:
             sql = f"DELETE FROM {table} WHERE {filter}"
-            input(sql)
+            input(f"\n{sql}")
             self.execute(sql)
             self.commit()
 
         except Exception as error:
-            input(f"Error deleting record(s) from {table}: {error}")
+            input(f"\n{error}")
