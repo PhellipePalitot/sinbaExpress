@@ -17,6 +17,7 @@ const UserProfile = () => {
     async function fetchUsuarios() {
       try {
         const response = await service.getAllUsuarios();
+        localStorage.setItem('clientes', JSON.stringify(response));
         setUsuarios(response); // Define os usuários com os dados do serviço
       } catch (error) {
         console.error("Erro ao buscar usuários:", error);

@@ -140,7 +140,7 @@ def delete_cliente(cliente_id: int, db: Connection = Depends(get_db)):
         raise HTTPException(status_code=500, detail=f"Erro ao excluir cliente: {str(e)}")
 
 # Operação READ ALL (Ler todas as informações dos clientes)
-@app.get("/clientes/", response_model=List[ClienteModel])
+@app.get("/clientes", response_model=List[dict])
 def read_all_clientes(db: Connection = Depends(get_db)):
     try:
         sql = "SELECT * FROM Clientes"
@@ -156,6 +156,7 @@ def read_all_clientes(db: Connection = Depends(get_db)):
 
 # Modelo para representar um produto
 class ProdutoModel(BaseModel):
+    idproduto: int
     nome_produto: str
     descricao: str
     preco: float
@@ -207,7 +208,7 @@ def delete_produto(produto_id: int, db: Connection = Depends(get_db)):
         raise HTTPException(status_code=500, detail=f"Erro ao excluir produto: {str(e)}")
 
 # Operação READ ALL (Ler todas as informações dos produtos)
-@app.get("/produtos/", response_model=List[ProdutoModel])
+@app.get("/produtos", response_model=List[dict])
 def read_all_produtos(db: Connection = Depends(get_db)):
     try:
         sql = "SELECT * FROM Produtos"
@@ -215,7 +216,7 @@ def read_all_produtos(db: Connection = Depends(get_db)):
         results = db.fetchall()
 
         # Transforma os resultados em uma lista de instâncias de ProdutoModel
-        produtos = [{"IDProduto": row[0], "nome_produto": row[1], "descricao": row[2], "preco": float(row[3]), "estoque_disponivel": row[4]} for row in results]
+        produtos = [{"idproduto": row[0], "nome_produto": row[1], "descricao": row[2], "preco": float(row[3]), "estoque_disponivel": row[4]} for row in results]
 
         return produtos
     except Exception as e:

@@ -38,7 +38,7 @@ const CartItemList = ({ cartItems, onRemoveItem }) => {
             </Text>
             <Button
               type="primary"
-              onClick={() => onRemoveItem(item.id)}
+              onClick={() => onRemoveItem(item.idproduto)}
               style={{ marginTop: "8px" }}
             >
               Remover
