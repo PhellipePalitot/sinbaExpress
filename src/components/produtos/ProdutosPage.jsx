@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ListaDeProdutos from "./ListaDeProdutos";
 
 const produtos = [
@@ -28,10 +28,30 @@ const produtos = [
 ];
 
 const ProdutosPage = () => {
+  // Inicialize o carrinho de compras a partir do localStorage
+  const [carrinho, setCarrinho] = useState(() => {
+    const carrinhoSalvo = localStorage.getItem("carrinho");
+    return carrinhoSalvo ? JSON.parse(carrinhoSalvo) : [];
+  });
+
+  const adicionarAoCarrinho = (produto) => {
+    // Crie uma cópia do carrinho atual e adicione o novo produto
+    const novoCarrinho = [...carrinho, produto];
+
+    // Atualize o carrinho com o novoCarrinho
+    setCarrinho(novoCarrinho);
+
+    // Atualize o carrinho no localStorage
+    localStorage.setItem("carrinho", JSON.stringify(novoCarrinho));
+  };
+
   return (
     <div>
       <h1>Lista de Produtos</h1>
-      <ListaDeProdutos produtos={produtos} />
+      <ListaDeProdutos
+        produtos={produtos}
+        adicionarAoCarrinho={adicionarAoCarrinho}
+      />
     </div>
   );
 };

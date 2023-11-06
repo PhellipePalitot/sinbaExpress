@@ -9,12 +9,12 @@ const CartItemList = ({ cartItems, onRemoveItem }) => {
       dataSource={cartItems}
       renderItem={(item) => (
         <List.Item>
-          <Card title={item.name} style={{ width: '100%' }}>
-            <Text>{item.description}</Text>
+          <Card title={item.nome_produto} style={{ width: '100%' }}>
+            <Text>{item.descricao}</Text>
             <Text strong style={{ display: 'block', marginTop: '8px' }}>
-              Preço: R$ {item.price.toFixed(2)}
+              Preço: R$ {item.preco}
             </Text>
-            <Button type="danger" onClick={() => onRemoveItem(item.id)} style={{ marginTop: '8px' }}>
+            <Button type="primary" onClick={() => onRemoveItem(item.id)} style={{ marginTop: '8px' }}>
               Remover
             </Button>
           </Card>

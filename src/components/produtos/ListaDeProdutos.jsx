@@ -4,12 +4,16 @@ import FiltroDeProdutos from "../filtro/FiltroDeProdutos";
 
 const { Meta } = Card;
 
-const ListaDeProdutos = ({ produtos }) => {
+const ListaDeProdutos = ({ produtos, adicionarAoCarrinho }) => {
     const [produtosFiltrados, setProdutosFiltrados] = useState(produtos);
+
+    const handleAdicionarAoCarrinho = (produto) => {
+        adicionarAoCarrinho(produto);
+      };
 
     const handleFiltrar = (coluna, tipoComparacao, valorFiltro) => {
         // Crie uma cópia da lista original de produtos para evitar a modificação direta.
-        const produtosFiltrados = [...produtos];
+        let produtosFiltrados = [...produtos];
       
         // Verifique a opção selecionada para a coluna e aplique a lógica de filtragem correspondente.
         if (coluna && tipoComparacao && valorFiltro) {
@@ -56,7 +60,7 @@ const ListaDeProdutos = ({ produtos }) => {
               <div>
                 <p>Preço: R$ {produto.preco}</p>
                 <p>Estoque Disponível: {produto.estoque_disponivel}</p>
-                <Button onClick={() => adicionarAoCarrinho(produto)}>
+                <Button onClick={() => handleAdicionarAoCarrinho(produto)}>
                   Adicionar ao Carrinho
                 </Button>
               </div>
