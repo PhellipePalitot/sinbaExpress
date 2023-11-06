@@ -25,8 +25,8 @@ const listaDeUsuarios = (props) => {
     <Row gutter={16}>
       {listaUsuarios?.map((usuario, index) => (
         <Col span={5} key={index}>
-          <Card title={"Informações do Usuário " + usuario.nome.split(" ")[0]} style={cardStyle}>
-            <div style={{ padding: "24px" }}>
+          <Card title={"Informações do Usuário " + usuario.usuario} style={cardStyle}>
+            <div>
               <Title level={4} style={titleStyle}>
                 Nome
               </Title>
