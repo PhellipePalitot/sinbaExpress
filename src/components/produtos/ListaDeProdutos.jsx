@@ -59,7 +59,6 @@ const ListaDeProdutos = ({ produtos, adicionarAoCarrinho }) => {
               />
               <div>
                 <p>Preço: R$ {produto.preco}</p>
-                <p>Estoque Disponível: {produto.estoque_disponivel}</p>
                 <Button onClick={() => handleAdicionarAoCarrinho(produto)}>
                   Adicionar ao Carrinho
                 </Button>
