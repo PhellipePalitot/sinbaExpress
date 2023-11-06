@@ -73,7 +73,7 @@ def create_cliente(cliente: dict, db: Connection = Depends(get_db)):
         raise HTTPException(status_code=500, detail=f"Erro ao criar cliente: {str(e)}")
 
 # Operação READ (Ler informações de um cliente)
-@app.get("/clientes/{cliente_id}/", response_model=dict)
+@app.get("/clientes/{cliente_id}/", response_model=List[dict])
 def read_cliente(cliente_id: int, db: Connection = Depends(get_db)):
     try:
         sql = "SELECT * FROM Clientes WHERE IDCliente = %s"
@@ -82,10 +82,9 @@ def read_cliente(cliente_id: int, db: Connection = Depends(get_db)):
         if not result:
             raise HTTPException(status_code=404, detail="Cliente não encontrado")
         
-        # Transforma o resultado em uma instância de ClienteModel
         cliente = [{"nome":row[1], "cpf":row[2], "endereco":row[3], "email":row[4], "email":row[5], "email":row[6]} for row in result]
-
         return cliente
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erro ao ler cliente: {str(e)}")
 
@@ -98,6 +97,7 @@ def update_cliente(cliente_id: int, cliente: dict, db: Connection = Depends(get_
         db.execute(sql, (cliente["nome"], cliente["cpf"], cliente["endereco"], cliente["email"], cliente["telefone"], cliente["usuario"], cliente_id))
         db.commit()
         return {"message": "Cliente atualizado com sucesso"}
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erro ao atualizar cliente: {str(e)}")
 
@@ -110,6 +110,7 @@ def delete_cliente(cliente_id: int, db: Connection = Depends(get_db)):
         cliente_id = db.cur.fetchone()[0]
         db.commit()
         return {"message": "Cliente excluído com sucesso"}
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erro ao excluir cliente: {str(e)}")
 
@@ -118,30 +119,26 @@ def delete_cliente(cliente_id: int, db: Connection = Depends(get_db)):
 def read_all_clientes(db: Connection = Depends(get_db)):
     try:
         sql = "SELECT * FROM Clientes"
-        db.execute(sql)
-        results = db.fetchall()
+        results = db.query(sql)
 
-        # Transforma os resultados em uma lista de instâncias de ClienteModel
         clientes = [{"IDCliente": row[0], "nome": row[1], "cpf": row[2], "endereco": row[3], "email": row[4], "telefone": row[5], "usuario": row[6]} for row in results]
-
         return clientes
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erro ao ler todos os clientes: {str(e)}")
 
 # Operação READ (Ler as informações de um produto)
-@app.get("/produtos/{produto_id}/", response_model=dict)
+@app.get("/produtos/{produto_id}/", response_model=List[dict])
 def read_produto(produto_id: int, db: Connection = Depends(get_db)):
     try:
         sql = "SELECT * FROM Produtos WHERE IDProduto = %s"
-        db.execute(sql, (produto_id,))
-        result = db.fetchall()
+        result = db.query(sql, (produto_id,))
         if not result:
             raise HTTPException(status_code=404, detail="Produto não encontrado")
         
-        # Transforma o resultado em uma instância de ProdutoModel
         produto = [{"nome_produto":row[1], "descricao":row[2], "preco":row[3], "estoque_disponivel":row[4]} for row in result]
-
         return produto
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erro ao ler produto: {str(e)}")
 
@@ -172,14 +169,12 @@ def delete_produto(produto_id: int, db: Connection = Depends(get_db)):
         raise HTTPException(status_code=500, detail=f"Erro ao excluir produto: {str(e)}")
 
 # Operação READ ALL (Ler todas as informações dos produtos)
-@app.get("/produtos/", response_model=dict)
+@app.get("/produtos/", response_model=List[dict])
 def read_all_produtos(db: Connection = Depends(get_db)):
     try:
         sql = "SELECT * FROM Produtos"
-        db.execute(sql)
-        results = db.fetchall()
+        results = db.query(sql)
 
-        # Transforma os resultados em uma lista de instâncias de ProdutoModel
         produtos = [{"IDProduto": row[0], "nome_produto": row[1], "descricao": row[2], "preco": float(row[3]), "estoque_disponivel": row[4]} for row in results]
         return produtos
 
@@ -203,7 +198,7 @@ def abastecer_estoque(categoria_id: int, qnt: int, db: Connection = Depends(get_
         db.commit()
 
         return {"message": "Categoria abastecida com sucesso"}
-
+        
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"{str(e)}")
 
