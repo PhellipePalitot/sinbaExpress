@@ -1,26 +1,62 @@
-import React from 'react';
-import { Card, Typography } from 'antd';
+import React, { useState, useEffect } from "react";
+import { Card, Typography, Input } from "antd";
+import ListaDeUsuarios from "./listaDeUsuarios";
+import usuarioService from "../../services/usuarioService"; // Importe o serviço
 
 const { Title, Text } = Typography;
+const { Search } = Input;
 
 const UserProfile = () => {
+  const [usuarios, setUsuarios] = useState([]); // State para armazenar os usuários
+  const [filtro, setFiltro] = useState(""); // State para o filtro de pesquisa
+  const [usuariosFiltrados, setUsuariosFiltrados] = useState([]); // State para armazenar os usuários
+
+  const service = usuarioService;
+
+  useEffect(() => {
+    async function fetchUsuarios() {
+      try {
+        const response = await service.getAllUsuarios();
+        setUsuarios(response); // Define os usuários com os dados do serviço
+      } catch (error) {
+        console.error("Erro ao buscar usuários:", error);
+      }
+    }
+
+    fetchUsuarios();
+  }, []);
+
+  const filtrarUsuarios = (filtro) => {
+    if (filtro.trim() === "") {
+      // Se o filtro estiver vazio, redefina a lista de usuários para a lista original
+      setFiltro("");
+      setUsuariosFiltrados([]);
+    } else {
+      // Filtrar usuários com base no filtro de pesquisa
+      const usuariosFiltrados = usuarios.filter((usuario) => {
+        // Verifique se qualquer valor de coluna contém o filtro de pesquisa (ignorando maiúsculas e minúsculas)
+        for (const key in usuario) {
+          if (usuario[key].toString().toLowerCase().includes(filtro.toLowerCase())) {
+            return true;
+          }
+        }
+        return false;
+      });
+
+      setFiltro(filtro);
+      setUsuariosFiltrados(usuariosFiltrados);
+    }
+  };
+
   return (
-    <Card title="Informações do Usuário">
-      <div style={{ padding: '24px' }}>
-        <Title level={4}>Nome</Title>
-        <Text>John Doe</Text>
-        <Title level={4} style={{ marginTop: '16px' }}>E-mail</Title>
-        <Text>john.doe@example.com</Text>
-        <Title level={4} style={{ marginTop: '16px' }}>Telefone</Title>
-        <Text>(123) 456-7890</Text>
-        <Title level={4} style={{ marginTop: '16px' }}>Endereço</Title>
-        <Text>
-          123 Main Street,
-          <br />
-          City, State, Zip Code
-        </Text>
-      </div>
-    </Card>
+    <div>
+      <Search
+        placeholder="Pesquisar usuários"
+        onSearch={filtrarUsuarios}
+        enterButton
+      />
+      <ListaDeUsuarios listaUsuarios={usuariosFiltrados.length ? usuariosFiltrados : usuarios} />
+    </div>
   );
 };
 

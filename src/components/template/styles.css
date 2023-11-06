@@ -44,3 +44,14 @@ body {
   flex-direction: column;
   justify-content: space-between;
 }
+
+.fixed-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #001529; /* Defina a cor de fundo desejada */
+  color: white; /* Defina a cor do texto desejada */
+  text-align: center;
+  padding: 10px;
+}
