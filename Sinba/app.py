@@ -216,7 +216,7 @@ def read_all_produtos(db: Connection = Depends(get_db)):
         results = db.fetchall()
 
         # Transforma os resultados em uma lista de instâncias de ProdutoModel
-        produtos = [{"idproduto": row[0], "nome_produto": row[1], "descricao": row[2], "preco": float(row[3]), "estoque_disponivel": row[4]} for row in results]
+        produtos = [{"idproduto": row[0], "nome_produto": row[1], "descricao": row[2], "preco": float(row[3]), "estoque_disponivel": row[4], "url": row[5]} for row in results]
 
         return produtos
     except Exception as e:
