@@ -5,6 +5,7 @@ import { Button, Drawer, Modal, message, Form, Input, Select } from 'antd';
 const { Option } = Select;
 
 const CartPage = () => {
+  //CARRINHO COMPLETO
   const [carrinho, setCarrinho] = useState(() => {
     const carrinhoSalvo = localStorage.getItem("carrinho");
     return carrinhoSalvo ? JSON.parse(carrinhoSalvo) : [];
@@ -56,6 +57,8 @@ const CartPage = () => {
 
   
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  //FORM COM ID E TIPO DE PAGAMENTO
   const [formData, setFormData] = useState({
     IDCliente: "",
     tipoPagamento: "",
